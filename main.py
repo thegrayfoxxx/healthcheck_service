@@ -18,6 +18,7 @@ def get_env_var(var_name: str) -> str:
 ADMIN_ID = int(get_env_var("ADMIN_ID"))
 BOT_TOKEN = get_env_var("BOT_TOKEN")
 DELAY_REQUESTS = int(get_env_var("DELAY_REQUESTS"))
+TIMEOUT_REQUESTS = int(get_env_var("TIMEOUT_REQUESTS"))
 URLS_LIST = get_env_var("URLS").replace(" ", "").split(",")
 
 bot = Bot(token=BOT_TOKEN)
@@ -35,7 +36,7 @@ async def send_notify(bot: Bot, chat_id: int, text: str):
 
 
 async def test_url(url: str) -> Url:
-    async with httpx.AsyncClient(verify=False) as client:
+    async with httpx.AsyncClient(verify=False, timeout=TIMEOUT_REQUESTS) as client:
         try:
             await client.get(url)
             return Url(url=url, status=True)
