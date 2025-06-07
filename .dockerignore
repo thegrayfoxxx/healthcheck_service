@@ -1,0 +1,8 @@
+.git
+.env
+.venv
+.ruff_cache
+.dockerignore
+docker-compose.yml
+Dockerfile
+**/*pycache*
