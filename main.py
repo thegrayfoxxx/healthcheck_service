@@ -29,7 +29,7 @@ class Url:
     status: bool
 
 
-async def send_notify(chat_id: int, text: str):
+async def send_notify(bot: Bot, chat_id: int, text: str):
     async with bot:
         await bot.send_message(chat_id=chat_id, text=text)
 
@@ -47,21 +47,26 @@ async def test_url(url: str) -> Url:
 
 async def test_urls(urls: list[str]) -> list[Url]:
     tasks = [test_url(url) for url in urls]
-
     return await asyncio.gather(*tasks)
+
+
+async def bad_urls_process(bad_urls: list[Url]):
+    for bad_url in bad_urls:
+        await send_notify(
+            bot=bot, chat_id=ADMIN_ID, text=f"URL {bad_url.url} is unavailable"
+        )
 
 
 async def main():
     await send_notify(
-        chat_id=ADMIN_ID, text=f"Bot started\n\nCheck urls list:\n{URLS_LIST}"
+        bot=bot,
+        chat_id=ADMIN_ID,
+        text=f"Bot started\n\nHealthcheck urls list:\n{URLS_LIST}",
     )
     while True:
         urls = await test_urls(URLS_LIST)
         bad_urls = [url for url in urls if not url.status]
-        for bad_url in bad_urls:
-            await send_notify(
-                chat_id=ADMIN_ID, text=f"URL {bad_url.url} is unavailable"
-            )
+        await bad_urls_process(bad_urls)
         await asyncio.sleep(DELAY_REQUESTS)
 
 
