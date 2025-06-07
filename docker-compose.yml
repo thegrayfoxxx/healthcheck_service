@@ -1,0 +1,5 @@
+services:
+  health_check_service:
+    build: .
+    env_file: ./.env
+    restart: always
