@@ -1,5 +1,7 @@
-from app.utils import get_env_var
 from dotenv import load_dotenv
+
+from app.utils import get_env_var
+
 load_dotenv()
 
 ADMIN_ID = int(get_env_var("ADMIN_ID"))
