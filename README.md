@@ -1,4 +1,4 @@
-Healthcheck Service
+# Healthcheck Service
 
 Проект представляет собой сервис для мониторинга доступности веб-ресурсов с уведомлениями в Telegram о недоступных URL через бота.
 
@@ -101,13 +101,17 @@ docker compose up -d
 ## Примеры уведомлений
 При запуске:
 
-> Bot started
-> Healthcheck urls list:
-> ['https://example.com', 'https://another.com']
+```
+Bot started
 
+Healthcheck urls list:
+['https://example.com', 'https://another.com']
+```
 
 При недоступности ресурса:
 
-> Bad urls:
-> https://down-site.com - False
-> https://another-down-site.com - False
+```
+Bad urls:
+https://down-site.com - False
+https://another-down-site.com - False
+```
