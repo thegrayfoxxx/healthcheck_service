@@ -50,16 +50,27 @@ async def check_urls_loop(delay_loop: int, timeout: int):
 
 
 async def notify_loop(delay_loop: int, timeout: int):
+
+    def get_notify_text(bad_urls: list[Url]) -> str:
+        urls_text = "\n".join([f"{url.url}" for url in bad_urls])
+        return f"Bad urls:\n\n{urls_text}"
+
     while True:
         bad_urls = DB.get_urls_by_status(False)
         if bad_urls:
             if CHECK_URL_BEFORE_NOTIFY:
                 await check_urls_service(bad_urls, timeout)  # type: ignore
                 bad_urls = DB.get_urls_by_status(False)
-            urls_text = "\n".join([f"{url.url} - {url.status}" for url in bad_urls])  # type: ignore
-            await send_notify(
-                bot=BOT,
-                chat_id=ADMIN_ID,
-                text=f"Bad urls:\n{urls_text}",
-            )
+                if bad_urls:
+                    await send_notify(
+                        bot=BOT,
+                        chat_id=ADMIN_ID,
+                        text=get_notify_text(bad_urls),
+                    )
+            else:
+                await send_notify(
+                    bot=BOT,
+                    chat_id=ADMIN_ID,
+                    text=get_notify_text(bad_urls),
+                )
         await asyncio.sleep(delay_loop)
