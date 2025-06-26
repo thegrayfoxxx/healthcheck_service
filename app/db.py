@@ -15,9 +15,12 @@ class UrlsDB:
         return [Url(url=url, status=status) for url, status in self.URLS_DB.items()]
 
     def get_urls_by_status(self, status: bool) -> list[Url]:
-        return [Url(url=url, status=s) for url, s in self.URLS_DB.items() if s == status]
+        return [
+            Url(url=url, status=s) for url, s in self.URLS_DB.items() if s == status
+        ]
 
     def change_url_status(self, url: str, status: bool):
-        self.URLS_DB[url] = status # type: ignore
+        self.URLS_DB[url] = status  # type: ignore
+
 
 DB = UrlsDB(get_env_var("URLS"))
