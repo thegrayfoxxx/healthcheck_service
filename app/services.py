@@ -15,9 +15,9 @@ async def send_notify(bot: Bot, chat_id: int, text: str):
 
 
 async def check_url(url: Url, timeout: int):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         try:
-            await client.get(url.url, timeout=timeout)
+            await client.get(url=url.url, timeout=timeout)
             url.status = True
             return url
         except httpx.TimeoutException:
