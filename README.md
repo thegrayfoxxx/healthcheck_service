@@ -1,4 +1,4 @@
-# Healthcheck Service
+Healthcheck Service
 
 Проект представляет собой сервис для мониторинга доступности веб-ресурсов с уведомлениями в Telegram о недоступных URL через бота.
 
@@ -11,6 +11,7 @@
 - Запуск в Docker-контейнере
 
 ## Структура проекта
+
 ```
 .
 ├── .dockerignore             # Игнорируемые файлы и папки при сборке Docker-образа
@@ -23,6 +24,13 @@
 ├── pyproject.toml            # Зависимости проекта
 ├── README.md                 # Информация о проекте
 └── uv.lock                   # UV lock file
+├── app/
+│   ├── bot.py                # Логика работы с Telegram ботом
+│   ├── db.py                 # Управление базой данных URL
+│   ├── entities.py           # Сущности проекта
+│   ├── envs.py               # Загрузка переменных окружения
+│   ├── services.py           # Основные сервисы проверки URL
+│   └── utils.py              # Вспомогательные утилиты
 ```
 
 ## Требования
@@ -33,13 +41,17 @@
 ## Настройка переменных окружения
 Создайте файл `.env` на основе `.env.example` со следующими параметрами:
 
-```ini
+```
 ADMIN_ID = ваш_telegram_id        # ID администратора Telegram
 BOT_TOKEN = "токен_бота"          # Токен Telegram-бота
 DELAY_REQUESTS = 60               # Интервал проверок в секундах
 TIMEOUT_REQUESTS = 10             # Время ожидания ответа от сервера в секундах
+DELAY_NOTIFY_CHECK = 15           # Интервал проверки недоступных URL перед уведомлением
+CHECK_URL_BEFORE_NOTIFY = "True"  # Проверять URL перед уведомлением
+TIMEOUT_BEFORE_NOTIFY_REQUESTS = 15 # Таймаут для проверки перед уведомлением
 URLS = "https://example.com, https://another.com"  # URL для мониторинга
 ```
+
 
 ### Как получить параметры:
 1. **Telegram Bot Token**: создайте бота через [@BotFather](https://t.me/BotFather)
@@ -88,14 +100,14 @@ docker compose up -d
 
 ## Примеры уведомлений
 При запуске:
-```
-Bot started
 
-Healthcheck urls list:
-['https://example.com', 'https://another.com']
-```
+> Bot started
+> Healthcheck urls list:
+> ['https://example.com', 'https://another.com']
+
 
 При недоступности ресурса:
-```
-URL https://down-site.com is unavailable
-```
+
+> Bad urls:
+> https://down-site.com - False
+> https://another-down-site.com - False
