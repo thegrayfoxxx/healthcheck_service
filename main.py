@@ -1,7 +1,5 @@
 import asyncio
 
-
-
 from app.bot import BOT
 from app.envs import (
     ADMIN_ID,
@@ -12,8 +10,6 @@ from app.envs import (
     URLS_LIST,
 )
 from app.services import check_urls_loop, notify_loop, send_notify
-
-
 
 
 async def main():
