@@ -112,6 +112,7 @@ Healthcheck urls list:
 
 ```
 Bad urls:
+
 https://down-site.com - False
 https://another-down-site.com - False
 ```
