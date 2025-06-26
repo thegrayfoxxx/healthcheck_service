@@ -50,7 +50,6 @@ async def check_urls_loop(delay_loop: int, timeout: int):
 
 
 async def notify_loop(delay_loop: int, timeout: int):
-
     def get_notify_text(bad_urls: list[Url]) -> str:
         urls_text = "\n".join([f"{url.url}" for url in bad_urls])
         return f"Bad urls:\n\n{urls_text}"
